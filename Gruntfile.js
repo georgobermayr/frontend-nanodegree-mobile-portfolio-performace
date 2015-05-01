@@ -63,11 +63,15 @@ module.exports = function(grunt) {
       },
       css: {
         files: ['css/dev/*.css'],
-        tasks: ['cssmin']
+        tasks: ['cssmin', 'critical', 'htmlmin']
       },
       imagemin: {
         files: ['img/**/*.{png,jpg,gif}'],
         tasks: ['imagemin']
+      },
+      html: {
+        files: ['index.html'],
+        tasks: ['critical', 'htmlmin']
       }
     }
   });
