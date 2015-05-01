@@ -18,8 +18,31 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          'css/style.min.css': ['css/dev/style.css'],
-          'css/print.min.css': ['css/dev/print.css']
+          'css/print.min.css': ['css/dev/print.css'],
+          'css/style.min.css': ['css/dev/style.css']
+        }
+      }
+    },
+    critical: {
+      test: {
+        options: {
+          base: './',
+          css: [
+            'css/style.min.css'
+          ]
+        },
+        src: 'index.dev.html',
+        dest: 'index.html'
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'index.html': 'index.html'
         }
       }
     },
@@ -54,9 +77,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-critical');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
   // Default task(s).
-  grunt.registerTask('build', ['uglify', 'cssmin', 'imagemin']);
+  grunt.registerTask('build', ['uglify', 'cssmin', 'critical', 'htmlmin', 'imagemin']);
   grunt.registerTask('default', ['build','watch']);
 
 };
