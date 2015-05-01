@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     critical: {
       test: {
         options: {
-          base: './',
+          base: '',
           css: [
             'css/style.min.css'
           ]
