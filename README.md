@@ -14,3 +14,5 @@
 # Optimizations in pizza.html & main.js
 - Image downsampling + optimization
 - Mimification of JS
+- Resize time of pizzas improved by fetching the offsetWidth of the pizza contianer only once instead doing so for every needed instance
+- Framerate improved by fetching teh scrollTop position once instaed of doint it in every iteration
