@@ -6,9 +6,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
-      build: {
+      main: {
         src: 'js/dev/perfmatters.js',
         dest: 'js/perfmatters.min.js'
+      },
+      pizza: {
+        src: 'views/js/main.js',
+        dest: 'views/js/main.min.js'
       }
     },
     cssmin: {
@@ -19,12 +23,14 @@ module.exports = function(grunt) {
       target: {
         files: {
           'css/print.min.css': ['css/dev/print.css'],
-          'css/style.min.css': ['css/dev/style.css']
+          'css/style.min.css': ['css/dev/style.css'],
+          'views/css/bootstrap-grid.min.css': ['views/css/bootstrap-grid.css'],
+          'views/css/style.min.css': ['views/css/style.css']
         }
       }
     },
     critical: {
-      test: {
+      main: {
         options: {
           base: '',
           css: [
@@ -47,18 +53,26 @@ module.exports = function(grunt) {
       }
     },
     imagemin: {
-      dist: {
+      main: {
         files: [{
           expand: true,
           cwd: 'img/',
           src: ['**/*.{png,jpg,gif}'],
           dest: 'img/'
         }]
+      },
+      pizza: {
+        files: [{
+          expand: true,
+          cwd: 'views/images/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'views/images/'
+        }]
       }
     },
     watch: {
       jsmin: {
-        files: ['js/dev/*.js'],
+        files: ['js/dev/*.js', 'views/js/*.js'],
         tasks: ['uglify']
       },
       css: {
@@ -70,7 +84,7 @@ module.exports = function(grunt) {
         tasks: ['imagemin']
       },
       html: {
-        files: ['index.html'],
+        files: ['index.dev.html'],
         tasks: ['critical', 'htmlmin']
       }
     }

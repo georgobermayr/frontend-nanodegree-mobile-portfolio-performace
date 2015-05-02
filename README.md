@@ -1,6 +1,6 @@
 ## Website Performance Optimization portfolio project
 
-# Optimzisations in index.html:
+# Optimizations in index.html:
 - Mimification & inlining of CSS
 - Mimification of JS
 - Async loading of analytics JS
@@ -10,3 +10,7 @@
 - Optimization of images, espacially the pizza image
 
 # Integration of Grunt to automate mimification & optimization prozesses
+
+# Optimizations in pizza.html & main.js
+- Image downsampling + optimization
+- Mimification of JS
