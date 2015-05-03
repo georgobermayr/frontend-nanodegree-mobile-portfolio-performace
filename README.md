@@ -16,3 +16,4 @@
 - Mimification of JS
 - Resize time of pizzas improved by fetching the offsetWidth of the pizza contianer only once instead doing so for every needed instance
 - Framerate improved by fetching teh scrollTop position once instaed of doint it in every iteration
+- Framerate imporoved by dynamicly calucating number of pizzas visible on user viewport

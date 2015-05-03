@@ -403,7 +403,7 @@ var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Fetch width of old pizza container once instead of separate in every call
-  var pizzaOldWith = document.querySelectorAll(".randomPizzaContainer").offsetWidth;
+  var windowwidth = document.getElementById("randomPizzas").offsetWidth;
 
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
@@ -425,10 +425,9 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
+  function determineDx (elem, size, pizzaOldWith) {
     //oldwidth var no longer needed since allread known
     //var oldwidth = elem.offsetWidth;
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     // use of pizzaOldWith variable
     var oldsize = pizzaOldWith / windowwidth;
 
@@ -455,9 +454,10 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+    var randomPizzaContainer = document.getElementsByClassName('randomPizzaContainer');
+    var pizzaOldWith = randomPizzaContainer[0].offsetWidth;
     for (var i = 0; i < randomPizzaContainer.length; i++) {
-      var dx = determineDx(randomPizzaContainer[i], size);
+      var dx = determineDx(randomPizzaContainer[i], size, pizzaOldWith);
       // use of pizzaOldWith variable
       var newwidth = (pizzaOldWith + dx) + 'px';
       randomPizzaContainer[i].style.width = newwidth;
@@ -476,8 +476,9 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+// Get pizzasDiv outside of loop
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -509,13 +510,14 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  // Getting scroll position once instead of in every iteration
+  // Getting scroll position and sinus function once instead of in every iteration
   var scrollTop = document.body.scrollTop;
+  var ScrollSinus = Math.sin(scrollTop / 1250);
 
-  var items = document.querySelectorAll('.mover');
+  var items = document.getElementsByClassName('mover');
   for (var i = 0; i < items.length; i++) {
     // Using the scrollTop variable
-    var phase = Math.sin((scrollTop / 1250) + (i % 5));
+    var phase = ScrollSinus + (i % 5);
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -528,7 +530,6 @@ function updatePositions() {
     logAverageFrame(timesToUpdatePosition);
   }
 }
-
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
@@ -536,7 +537,17 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+
+  // Get viewport width and height
+  var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+  var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+  // Calcuate number of pizzas drawable on viewport
+  var elementsHorizontal = w / (100 + s);
+  var elementsVertical = h / (73.333 + 8);
+  var elementsTotal = elementsVertical * elementsHorizontal;
+
+  for (var i = 0; i < elementsTotal; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
